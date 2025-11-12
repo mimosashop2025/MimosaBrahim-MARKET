@@ -1,107 +1,114 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MimosaShop2026</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-
 body {
-  font-family: 'Cairo', sans-serif;
   margin: 0;
-  background: #fff6fa;
-  color: #333;
+  font-family: "Cairo", sans-serif;
+  background-color: #000;
+  color: #fff;
 }
-
 header {
-  background: linear-gradient(90deg, #ff70a6, #d6336c);
+  background: linear-gradient(90deg, #ff007f, #7d00ff);
   color: white;
-  text-align: center;
   padding: 20px;
+  text-align: center;
   font-size: 26px;
   font-weight: bold;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 25px #7d00ff;
 }
-
+section {
+  padding: 30px;
+}
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 25px;
-  padding: 30px;
-  max-width: 1200px;
-  margin: auto;
+  margin-top: 20px;
 }
-
 .product-card {
-  background: white;
+  background: #111;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
-  overflow: hidden;
+  padding: 15px;
+  box-shadow: 0 0 15px rgba(255, 0, 130, 0.3);
+  text-align: center;
+  transition: transform 0.3s;
 }
-
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: scale(1.05);
 }
-
 .product-card img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
+  border-radius: 10px;
 }
-
-.product-info {
-  padding: 15px;
-}
-
-.product-info h3 {
-  margin: 5px 0;
-  font-size: 20px;
-  color: #d6336c;
-}
-
-.product-info p {
-  margin: 8px 0;
-  font-size: 16px;
-  color: #444;
-}
-
-.btn-buy {
-  display: inline-block;
-  background: linear-gradient(90deg, #ff85a2, #d6336c);
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
+.btn {
+  background: linear-gradient(90deg, #ff007f, #7d00ff);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
   border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  cursor: pointer;
   transition: 0.3s;
 }
-
-.btn-buy:hover {
-  background: linear-gradient(90deg, #ffb3c6, #e2557a);
+.btn:hover {
+  filter: brightness(1.2);
 }
-
 footer {
+  background: #0a0a0a;
   text-align: center;
-  background: #fff;
-  color: #777;
-  padding: 15px;
-  border-top: 1px solid #eee;
-  font-size: 14px;
+  padding: 20px;
+  color: #888;
 }
-
-a.admin-link {
+#buy-section, #admin-section, #dashboard-section {
+  display: none;
+}
+form {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(255, 0, 130, 0.3);
+}
+input {
+  width: 90%;
+  margin: 10px auto;
   display: block;
-  text-align: center;
-  margin: 20px auto;
-  font-weight: bold;
-  color: #d6336c;
-  text-decoration: none;
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
 }
-a.admin-link:hover {
-  text-decoration: underline;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+table, th, td {
+  border: 1px solid #333;
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+a {
+  color: #ff4bf1;
+  cursor: pointer;
+}
+.back-link {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  color: #aaa;
 }
 </style>
 </head>
@@ -109,22 +116,156 @@ a.admin-link:hover {
 
 <header>MimosaShop2026</header>
 
-<div class="products-grid">
-  {% for product in products %}
-  <div class="product-card">
-    <img src="{{ url_for('static', filename='images/' + product['image']) }}" alt="{{ product['name'] }}">
-    <div class="product-info">
-      <h3>{{ product['name'] }}</h3>
-      <p>السعر: {{ product['price'] }}$</p>
-      <a href="{{ url_for('buy', product_id=product['id']) }}" class="btn-buy">شراء الآن</a>
-    </div>
+<!-- الصفحة الرئيسية -->
+<section id="market-section">
+  <h2 style="text-align:center;">🛍️ المنتجات المعروضة</h2>
+  <div class="products-grid" id="product-list"></div>
+  <div style="text-align:center;margin-top:30px;">
+    <a onclick="showSection('admin-section')" class="btn">دخول الأدمن</a>
   </div>
-  {% endfor %}
-</div>
+</section>
 
-<a href="{{ url_for('admin_login') }}" class="admin-link">لوحة الادمن</a>
+<!-- صفحة الشراء -->
+<section id="buy-section">
+  <h2 style="text-align:center;">💸 شراء المنتج</h2>
+  <div id="buy-content"></div>
+  <a class="back-link" onclick="showSection('market-section')">⬅ العودة للسوق</a>
+</section>
 
-<footer>© 2026 MimosaShop. جميع الحقوق محفوظة.</footer>
+<!-- صفحة الأدمن -->
+<section id="admin-section">
+  <h2 style="text-align:center;">🔐 تسجيل دخول الأدمن</h2>
+  <form onsubmit="return loginAdmin(event)">
+    <input type="text" id="admin-user" placeholder="اسم المستخدم" required>
+    <input type="password" id="admin-pass" placeholder="كلمة المرور" required>
+    <button class="btn" type="submit">دخول</button>
+  </form>
+  <a class="back-link" onclick="showSection('market-section')">⬅ العودة</a>
+</section>
 
+<!-- لوحة التحكم -->
+<section id="dashboard-section">
+  <h2 style="text-align:center;">⚙️ لوحة تحكم الأدمن</h2>
+  <form onsubmit="return addProduct(event)">
+    <input type="text" id="new-name" placeholder="اسم المنتج" required>
+    <input type="number" id="new-price" placeholder="السعر" required>
+    <input type="text" id="new-image" placeholder="رابط الصورة" required>
+    <button class="btn" type="submit">➕ إضافة المنتج</button>
+  </form>
+
+  <h3>📦 المنتجات</h3>
+  <table id="table-products">
+    <thead>
+      <tr><th>#</th><th>الاسم</th><th>السعر</th><th>الصورة</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h3>🧾 الطلبات</h3>
+  <table id="table-orders">
+    <thead>
+      <tr><th>#</th><th>المنتج</th><th>الاسم</th><th>الموقع</th><th>العنوان</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <a class="back-link" onclick="logoutAdmin()">⬅ تسجيل الخروج</a>
+</section>
+
+<footer>© 2026 MimosaShop | جميع الحقوق محفوظة</footer>
+
+<script>
+let products = [
+  {name: "عطر ميموزا الفاخر", price: 29.99, image: "https://via.placeholder.com/250x180?text=Mimosa+Perfume"},
+  {name: "حقيبة جلد أصلية", price: 49.99, image: "https://via.placeholder.com/250x180?text=Leather+Bag"},
+  {name: "نظارات شمسية", price: 19.99, image: "https://via.placeholder.com/250x180?text=Sunglasses"}
+];
+let orders = [];
+let adminLogged = false;
+
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.style.display = "none");
+  document.getElementById(id).style.display = "block";
+  if (id === "market-section") renderProducts();
+  if (id === "dashboard-section") renderDashboard();
+}
+
+function renderProducts() {
+  const container = document.getElementById("product-list");
+  container.innerHTML = "";
+  products.forEach((p, i) => {
+    container.innerHTML += `
+      <div class="product-card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+        <p>السعر: ${p.price}$</p>
+        <a class="btn" onclick="buyProduct(${i})">شراء</a>
+      </div>`;
+  });
+}
+
+function buyProduct(i) {
+  const p = products[i];
+  document.getElementById("buy-content").innerHTML = `
+    <form onsubmit="return confirmBuy(event, ${i})">
+      <p>المنتج: <b>${p.name}</b></p>
+      <input type="text" id="cust-name" placeholder="اسمك" required>
+      <input type="text" id="cust-loc" placeholder="المدينة / الموقع" required>
+      <input type="text" id="cust-add" placeholder="العنوان الكامل" required>
+      <button class="btn" type="submit">تأكيد الطلب</button>
+    </form>`;
+  showSection("buy-section");
+}
+
+function confirmBuy(e, i) {
+  e.preventDefault();
+  let name = document.getElementById("cust-name").value;
+  let loc = document.getElementById("cust-loc").value;
+  let add = document.getElementById("cust-add").value;
+  orders.push({id: orders.length+1, product: products[i].name, name, loc, add});
+  alert("✅ تم إرسال طلبك بنجاح!");
+  showSection("market-section");
+}
+
+function loginAdmin(e) {
+  e.preventDefault();
+  let u = document.getElementById("admin-user").value;
+  let p = document.getElementById("admin-pass").value;
+  if (u === "admin" && p === "12345") {
+    adminLogged = true;
+    showSection("dashboard-section");
+  } else alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة!");
+}
+
+function logoutAdmin() {
+  adminLogged = false;
+  showSection("market-section");
+}
+
+function addProduct(e) {
+  e.preventDefault();
+  let n = document.getElementById("new-name").value;
+  let pr = document.getElementById("new-price").value;
+  let im = document.getElementById("new-image").value;
+  products.push({name: n, price: pr, image: im});
+  renderDashboard();
+  e.target.reset();
+}
+
+function renderDashboard() {
+  const pt = document.querySelector("#table-products tbody");
+  const ot = document.querySelector("#table-orders tbody");
+  pt.innerHTML = "";
+  ot.innerHTML = "";
+  products.forEach((p, i) => {
+    pt.innerHTML += `<tr><td>${i+1}</td><td>${p.name}</td><td>${p.price}$</td><td><img src="${p.image}" width="60"></td></tr>`;
+  });
+  orders.forEach(o => {
+    ot.innerHTML += `<tr><td>${o.id}</td><td>${o.product}</td><td>${o.name}</td><td>${o.loc}</td><td>${o.add}</td></tr>`;
+  });
+}
+
+showSection("market-section");
+</script>
 </body>
 </html>
