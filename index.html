@@ -18,7 +18,7 @@ header {
   text-align: center;
   font-size: 26px;
   font-weight: bold;
-  box-shadow: 0 0 25px #7d00ff;
+  text-shadow: 0 0 10px #ff00aa, 0 0 20px #7d00ff;
 }
 section {
   padding: 30px;
@@ -35,10 +35,11 @@ section {
   padding: 15px;
   box-shadow: 0 0 15px rgba(255, 0, 130, 0.3);
   text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 .product-card:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 0, 130, 0.7);
 }
 .product-card img {
   width: 100%;
@@ -57,9 +58,12 @@ section {
   margin-top: 10px;
   cursor: pointer;
   transition: 0.3s;
+  text-shadow: 0 0 5px #ff00aa, 0 0 10px #7d00ff;
+  box-shadow: 0 0 10px #ff00aa, 0 0 20px #7d00ff;
 }
 .btn:hover {
-  filter: brightness(1.2);
+  filter: brightness(1.3);
+  box-shadow: 0 0 20px #ff00aa, 0 0 40px #7d00ff;
 }
 footer {
   background: #0a0a0a;
@@ -110,13 +114,15 @@ a {
   text-align: center;
   color: #aaa;
 }
+h2, h3 {
+  text-shadow: 0 0 5px #ff00aa, 0 0 15px #7d00ff;
+}
 </style>
 </head>
 <body>
 
 <header>MimosaShop2026</header>
 
-<!-- الصفحة الرئيسية -->
 <section id="market-section">
   <h2 style="text-align:center;">🛍️ المنتجات المعروضة</h2>
   <div class="products-grid" id="product-list"></div>
@@ -125,14 +131,12 @@ a {
   </div>
 </section>
 
-<!-- صفحة الشراء -->
 <section id="buy-section">
   <h2 style="text-align:center;">💸 شراء المنتج</h2>
   <div id="buy-content"></div>
   <a class="back-link" onclick="showSection('market-section')">⬅ العودة للسوق</a>
 </section>
 
-<!-- صفحة الأدمن -->
 <section id="admin-section">
   <h2 style="text-align:center;">🔐 تسجيل دخول الأدمن</h2>
   <form onsubmit="return loginAdmin(event)">
@@ -143,7 +147,6 @@ a {
   <a class="back-link" onclick="showSection('market-section')">⬅ العودة</a>
 </section>
 
-<!-- لوحة التحكم -->
 <section id="dashboard-section">
   <h2 style="text-align:center;">⚙️ لوحة تحكم الأدمن</h2>
   <form onsubmit="return addProduct(event)">
